@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// TODO: 没有必要弄两个 problem 数据结构，可以合并
 type problem struct {
 	ID                                 int
 	Title                              string
@@ -19,11 +20,10 @@ func newProblem(ps problemStatus) problem {
 	level := []string{"", "Easy", "Medium", "Hard"}
 
 	p := problem{
-		ID:        ps.State.ID,
-		Title:     ps.State.Title,
-		TitleSlug: ps.State.TitleSlug,
-		// p.Submitted + 1 是因为刚刚添加的新题的 submitted 为 0
-		PassRate:   fmt.Sprintf("%d%%", ps.ACs*100/(ps.Submitted+1)),
+		ID:         ps.State.ID,
+		Title:      ps.State.Title,
+		TitleSlug:  ps.State.TitleSlug,
+		PassRate:   fmt.Sprintf("%d%%", ps.ACs*100/ps.Submitted),
 		Difficulty: level[ps.Difficulty.Level],
 		IsAccepted: ps.Status == "ac",
 		IsPaid:     ps.IsPaid,
@@ -41,9 +41,9 @@ func (p problem) isAvailable() bool {
 	return true
 }
 
-func (p problem) Dir() string {
-	path := "Algorithms"
-	return fmt.Sprintf("./%s/%04d.%s", path, p.ID, p.TitleSlug)
+func (p problem) path() string {
+	dir := "Algorithms"
+	return fmt.Sprintf("./%s/%04d.%s", dir, p.ID, p.TitleSlug)
 }
 
 func (p problem) link() string {
@@ -53,11 +53,10 @@ func (p problem) link() string {
 func (p problem) tableLine() string {
 	// 题号
 	res := fmt.Sprintf("|[%d](%s)|", p.ID, p.link())
-
 	// 标题
 	t := ""
 	if p.IsAccepted {
-		t = fmt.Sprintf(`[%s](%s)`, strings.TrimSpace(p.Title), p.Dir())
+		t = fmt.Sprintf(`[%s](%s)`, strings.TrimSpace(p.Title), p.path())
 	} else {
 		t = fmt.Sprintf(` * %s`, p.Title)
 	}
@@ -65,27 +64,19 @@ func (p problem) tableLine() string {
 		t += " :new: "
 	}
 	res += t + "|"
-
 	// 通过率
 	res += fmt.Sprintf("%s|", p.PassRate)
-
 	// 难度
 	res += fmt.Sprintf("%s|", p.Difficulty)
-
 	// 收藏
 	f := ""
 	if p.IsFavor {
 		f = "[❤](https://leetcode.com/list/oussv5j)"
 	}
 	res += fmt.Sprintf("%s|\n", f)
-
 	return res
 }
 
 func (p problem) listLine() string {
 	return fmt.Sprintf("- [%d.%s](%s)\n", p.ID, p.Title, p.link())
-}
-
-func (p problem) didaTask(prefix string) string {
-	return fmt.Sprintf("#%s - %04d - #%s - %s - %s - %s", prefix, p.ID, p.Difficulty, p.PassRate, p.Title, p.link())
 }

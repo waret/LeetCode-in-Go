@@ -18,7 +18,7 @@ func creatREADME(p problem) {
 
 	content = replaceCharacters(content)
 
-	filename := fmt.Sprintf("%s/README.md", p.Dir())
+	filename := fmt.Sprintf("%s/README.md", p.path())
 
 	write(filename, content)
 
@@ -72,58 +72,3 @@ func replaceCharacters(s string) string {
 func getDescription(url string) string {
 	return ""
 }
-
-// func getDescription(url string) string {
-// 	var err error
-
-// 	// create context
-// 	ctxt, cancel := context.WithCancel(context.Background())
-// 	defer cancel()
-
-// 	var options chromedp.Option
-// 	options = chromedp.WithRunnerOptions(
-// 		runner.Flag("headless", true),
-// 		runner.Flag("no-sandbox", true),
-// 		runner.Flag("disable-gpu", true),
-// 	)
-
-// 	log.Println("chromedp timeout:", chromedp.DefaultNewTargetTimeout)
-
-// 	// create chrome instance
-// 	c, err := chromedp.New(ctxt, options)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-
-// 	// run task list
-// 	var res string
-// 	err = c.Run(ctxt, text(url, &res))
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-
-// 	// shutdown chrome
-// 	err = c.Shutdown(ctxt)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-
-// 	// wait for chrome to finish
-// 	err = c.Wait()
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-
-// 	log.Println("Desc:", res)
-
-// 	return res
-// }
-
-// func text(url string, res *string) chromedp.Tasks {
-// 	sel := `div.content__eAC7`
-// 	return chromedp.Tasks{
-// 		chromedp.Sleep(time.Second * 3),
-// 		chromedp.Navigate(url),
-// 		chromedp.Text(sel, res, chromedp.NodeVisible, chromedp.BySearch),
-// 	}
-// }

@@ -27,7 +27,7 @@ func main() {
 
 	switch os.Args[1] {
 	case "readme":
-		updateMyData()
+		updateMyLeetCode()
 		buildReadme()
 	default:
 		problemNumber, err := strconv.Atoi(os.Args[1])
