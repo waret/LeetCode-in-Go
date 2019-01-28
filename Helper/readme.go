@@ -11,7 +11,7 @@ import (
 func buildReadme() {
 	log.Println("开始，重建 README 文档")
 
-	lc := newLeetCode()
+	lc := readLeetCode()
 
 	makeReadmeFile(lc)
 

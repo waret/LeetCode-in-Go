@@ -2,56 +2,20 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
-	"time"
 )
 
-const (
-	leetCodeJSON = "leetcode.json"
-)
-
-type leetcode struct {
-	Username string    // 用户名
-	Ranking  int       // 网站排名
-	Updated  time.Time // 数据更新时间
-
-	Record   record   // 已解答题目与全部题目的数量，按照难度统计
-	Problems problems // 所有问题的集合
-}
-
-func newLeetCode() *leetcode {
-	log.Println("开始，获取 LeetCode 数据")
-
-	lc, err := readLeetCode()
-	if err != nil {
-		log.Println("读取 LeetCode 的记录失败，正在重新生成 LeetCode 记录。失败原因：", err.Error())
-		lc = latestLeetCode()
-	}
-
-	lc.refresh()
-
-	lc.save()
-
-	log.Println("获取 LeetCode 的最新数据")
-	return lc
-}
-
-func readLeetCode() (*leetcode, error) {
+func readLeetCode() *leetcode {
 	data, err := ioutil.ReadFile(leetCodeJSON)
-	if err != nil {
-		return nil, errors.New("读取文件失败：" + err.Error())
-	}
+	check(err)
 
 	lc := new(leetcode)
-	if err := json.Unmarshal(data, lc); err != nil {
-		return nil, errors.New("转换成 leetcode 时，失败：" + err.Error())
-	}
+	err = json.Unmarshal(data, lc)
+	check(err)
 
-	return lc, nil
+	return lc
 }
 
 func (lc *leetcode) save() {
@@ -69,74 +33,6 @@ func (lc *leetcode) save() {
 	}
 	log.Println("最新的 LeetCode 记录已经保存。")
 	return
-}
-
-func (lc *leetcode) refresh() {
-	if time.Since(lc.Updated) < time.Minute {
-		log.Printf("LeetCode 数据在 %s 前刚刚更新过，跳过此次刷新\n", time.Since(lc.Updated))
-		return
-	}
-
-	log.Println("开始，刷新 LeetCode 数据")
-	newLC := latestLeetCode()
-
-	logDiff(lc, newLC)
-
-	*lc = *newLC
-}
-
-func logDiff(old, new *leetcode) {
-	// 对比 ranking
-	str := fmt.Sprintf("当前排名 %d", new.Ranking)
-	verb, delta := "进步", old.Ranking-new.Ranking
-	if new.Ranking > old.Ranking {
-		verb, delta = "后退", new.Ranking-old.Ranking
-	}
-	str += fmt.Sprintf("，%s了 %d 名", verb, delta)
-	log.Println(str)
-
-	lenOld, lenNew := len(old.Problems), len(new.Problems)
-	hasNewFinished := false
-
-	i := 0
-
-	// 检查新旧都有的问题
-	for i < lenOld && i < lenNew {
-		o, n := old.Problems[i], new.Problems[i]
-		// 检查是 n 是否是新 完成
-		if o.IsAccepted == false && n.IsAccepted == true {
-			log.Printf("～新完成～ %d - %s", n.ID, n.Title)
-			hasNewFinished = true
-		}
-		// 检查是 n 是否是新 收藏
-		if o.IsFavor == false && n.IsFavor == true {
-			log.Printf("～新收藏～ %d - %s", n.ID, n.Title)
-		} else if o.IsFavor == true && n.IsFavor == false {
-			log.Printf("～取消收藏～ %d - %s", o.ID, o.Title)
-			time.Sleep(time.Second)
-		}
-
-		// 有时候，会在中间添加新题
-		if o.Title == "" && n.Title != "" {
-			log.Printf("新题: %d - %s", new.Problems[i].ID, new.Problems[i].Title)
-		}
-
-		i++
-	}
-
-	log.Printf("已经检查完了 %d 题\n", i)
-
-	if !hasNewFinished {
-		log.Println("～ 没有新完成习题 ～")
-	}
-
-	// 检查新添加的习题
-	for i < lenNew {
-		if new.Problems[i].isAvailable() {
-			log.Printf("新题: %d - %s", new.Problems[i].ID, new.Problems[i].Title)
-		}
-		i++
-	}
 }
 
 func (lc *leetcode) ProgressTable() string {

@@ -13,7 +13,7 @@ func makeTaskFile(prefix string, first, last int) {
 
 	res := ""
 	count := 0
-	ps := newLeetCode().Problems
+	ps := readLeetCode().Problems
 	var isWanted func(int) bool
 	collect := func() {
 		for i := first; i <= last && i < len(ps); i++ {

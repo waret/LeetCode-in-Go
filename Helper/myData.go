@@ -13,7 +13,17 @@ import (
 
 const (
 	unavailableFile = "unavailable.json"
+	leetCodeJSON    = "leetcode.json"
 )
+
+type leetcode struct {
+	Username string    // 用户名
+	Ranking  int       // 网站排名
+	Updated  time.Time // 数据更新时间
+
+	Record   record   // 已解答题目与全部题目的数量，按照难度统计
+	Problems problems // 所有问题的集合
+}
 
 func updateMyData() {
 	lc := latestLeetCode()

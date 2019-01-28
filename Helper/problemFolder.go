@@ -16,7 +16,7 @@ func buildProblemFolder(problemNum int) {
 	log.Printf("~~ 开始生成第 %d 题的文件夹 ~~\n", problemNum)
 
 	// 获取 LeetCode 的记录文件
-	lc := newLeetCode()
+	lc := readLeetCode()
 
 	// 检查 problemNum 的合法性
 	if problemNum >= len(lc.Problems) {
