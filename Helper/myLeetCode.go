@@ -18,9 +18,8 @@ const (
 )
 
 type leetcode struct {
-	Username string // 用户名
-	Ranking  int    // 网站排名
-
+	Username string   // 用户名
+	Ranking  int      // 网站排名
 	Record   record   // 已解答题目与全部题目的数量，按照难度统计
 	Problems problems // 所有问题的集合
 }

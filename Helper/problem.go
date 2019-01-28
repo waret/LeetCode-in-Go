@@ -5,7 +5,6 @@ import (
 	"strings"
 )
 
-// TODO: 没有必要弄两个 problem 数据结构，可以合并
 type problem struct {
 	ID                                 int
 	Title                              string
