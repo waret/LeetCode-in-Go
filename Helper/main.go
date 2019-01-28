@@ -19,7 +19,7 @@ const (
 )
 
 func main() {
-	log.Printf("Hi, %s. I'm %s helper.\n", getConfig().Username, VERSION)
+	log.Printf("Hi, %s. I'm %s \n", getConfig().Username, VERSION)
 
 	if len(os.Args) != 2 {
 		printUsageAndExit()
@@ -27,6 +27,7 @@ func main() {
 
 	switch os.Args[1] {
 	case "readme":
+		updateMyData()
 		buildReadme()
 	default:
 		problemNumber, err := strconv.Atoi(os.Args[1])

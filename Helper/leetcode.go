@@ -29,7 +29,7 @@ func newLeetCode() *leetcode {
 	lc, err := readLeetCode()
 	if err != nil {
 		log.Println("读取 LeetCode 的记录失败，正在重新生成 LeetCode 记录。失败原因：", err.Error())
-		lc = getLeetCode()
+		lc = latestLeetCode()
 	}
 
 	lc.refresh()
@@ -78,7 +78,7 @@ func (lc *leetcode) refresh() {
 	}
 
 	log.Println("开始，刷新 LeetCode 数据")
-	newLC := getLeetCode()
+	newLC := latestLeetCode()
 
 	logDiff(lc, newLC)
 
@@ -106,13 +106,11 @@ func logDiff(old, new *leetcode) {
 		// 检查是 n 是否是新 完成
 		if o.IsAccepted == false && n.IsAccepted == true {
 			log.Printf("～新完成～ %d - %s", n.ID, n.Title)
-			dida("re", n)
 			hasNewFinished = true
 		}
 		// 检查是 n 是否是新 收藏
 		if o.IsFavor == false && n.IsFavor == true {
 			log.Printf("～新收藏～ %d - %s", n.ID, n.Title)
-			dida("fa", n)
 		} else if o.IsFavor == true && n.IsFavor == false {
 			log.Printf("～取消收藏～ %d - %s", o.ID, o.Title)
 			time.Sleep(time.Second)
@@ -121,7 +119,6 @@ func logDiff(old, new *leetcode) {
 		// 有时候，会在中间添加新题
 		if o.Title == "" && n.Title != "" {
 			log.Printf("新题: %d - %s", new.Problems[i].ID, new.Problems[i].Title)
-			dida("do", n)
 		}
 
 		i++
@@ -137,7 +134,6 @@ func logDiff(old, new *leetcode) {
 	for i < lenNew {
 		if new.Problems[i].isAvailable() {
 			log.Printf("新题: %d - %s", new.Problems[i].ID, new.Problems[i].Title)
-			dida("do", new.Problems[i])
 		}
 		i++
 	}

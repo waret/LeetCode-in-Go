@@ -26,9 +26,9 @@ func makeReadmeFile(lc *leetcode) {
 
 	var b bytes.Buffer
 
-	tmpl := template.Must(template.New("readme").Parse(readTMPL("template.markdown")))
+	oneTemplate := template.Must(template.New("readme").Parse(readTMPL("template.markdown")))
 
-	err := tmpl.Execute(&b, lc)
+	err := oneTemplate.Execute(&b, lc)
 	if err != nil {
 		log.Fatal(err)
 	}
