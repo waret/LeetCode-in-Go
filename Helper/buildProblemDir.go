@@ -12,7 +12,7 @@ import (
 	"github.com/aQuaYi/GoKit"
 )
 
-func buildProblemDir(problemNum int) {
+func buildProblemFolder(problemNum int) {
 	log.Printf("~~ 开始生成第 %d 题的文件夹 ~~\n", problemNum)
 
 	// 获取 LeetCode 的记录文件
@@ -111,7 +111,7 @@ func creatGo(p problem, function, ansType string) {
 
 	write(filename, content)
 
-	vscodeOpen(filename)
+	vscode(filename)
 }
 
 func creatGoTest(p problem, fcName, para, ansType string) {
@@ -170,7 +170,7 @@ import (
 
 	write(filename, content)
 
-	vscodeOpen(filename)
+	vscode(filename)
 
 }
 

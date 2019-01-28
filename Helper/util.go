@@ -18,9 +18,7 @@ func max(a, b int) int {
 // 这是一个通用的方法
 func read(path string) []byte {
 	file, err := os.Open(path)
-	if err != nil {
-		panic(err)
-	}
+	check(err)
 	defer file.Close()
 
 	data, err := ioutil.ReadAll(file)
@@ -29,16 +27,27 @@ func read(path string) []byte {
 
 func write(path, content string) {
 	err := ioutil.WriteFile(path, []byte(content), 0755)
-	if err != nil {
-		log.Fatal(err)
-	}
+	check(err)
 }
 
 // 利用 VSCode 打开文件
-func vscodeOpen(filename string) {
-	cmd := exec.Command("code", "-r", filename)
+func vscode(filename string) {
+	open("code", "-r", filename)
+}
+
+func chrome(link string) {
+	open("google-chrome", link)
+}
+
+func open(software string, arg ...string) {
+	cmd := exec.Command(software, arg...)
 	_, err := cmd.Output()
+	check(err)
+}
+
+// TODO: 把所有的 if err 修改成 check
+func check(err error) {
 	if err != nil {
-		panic(err.Error())
+		log.Panic(err)
 	}
 }

@@ -22,7 +22,7 @@ func creatREADME(p problem) {
 
 	write(filename, content)
 
-	vscodeOpen(filename)
+	vscode(filename)
 
 }
 
