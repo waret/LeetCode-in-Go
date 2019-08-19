@@ -1,4 +1,4 @@
-package problem0010
+package main
 
 import (
 	"testing"
@@ -24,8 +24,7 @@ func Test_Problem0010(t *testing.T) {
 	ast := assert.New(t)
 
 	qs := []question{
-
-		question{
+		{
 			p: para{
 				one: "aa",
 				two: "a",
@@ -34,7 +33,7 @@ func Test_Problem0010(t *testing.T) {
 				one: false,
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "aa",
 				two: "aa",
@@ -43,7 +42,7 @@ func Test_Problem0010(t *testing.T) {
 				one: true,
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "aaa",
 				two: "aa",
@@ -52,8 +51,7 @@ func Test_Problem0010(t *testing.T) {
 				one: false,
 			},
 		},
-
-		question{
+		{
 			p: para{
 				one: "aa",
 				two: "a*",
@@ -62,7 +60,7 @@ func Test_Problem0010(t *testing.T) {
 				one: true,
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "aa",
 				two: ".*",
@@ -71,7 +69,7 @@ func Test_Problem0010(t *testing.T) {
 				one: true,
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "ab",
 				two: ".*",
@@ -80,7 +78,7 @@ func Test_Problem0010(t *testing.T) {
 				one: true,
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "aab",
 				two: "c*a*b",
@@ -89,7 +87,7 @@ func Test_Problem0010(t *testing.T) {
 				one: true,
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "aaaaaaaab",
 				two: "c*a*b",
@@ -98,7 +96,7 @@ func Test_Problem0010(t *testing.T) {
 				one: true,
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "ab",
 				two: ".*c",
@@ -107,7 +105,7 @@ func Test_Problem0010(t *testing.T) {
 				one: false,
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "ab",
 				two: "z*t*x*c*a*b",
@@ -116,7 +114,7 @@ func Test_Problem0010(t *testing.T) {
 				one: true,
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "ab",
 				two: "c*a*b",
@@ -125,7 +123,7 @@ func Test_Problem0010(t *testing.T) {
 				one: true,
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "abc",
 				two: ".*",
@@ -134,7 +132,7 @@ func Test_Problem0010(t *testing.T) {
 				one: true,
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "ab",
 				two: ".*b.*",
@@ -143,7 +141,7 @@ func Test_Problem0010(t *testing.T) {
 				one: true,
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "b",
 				two: ".*b.*",
@@ -152,7 +150,7 @@ func Test_Problem0010(t *testing.T) {
 				one: true,
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "b",
 				two: ".*...b",
@@ -161,7 +159,7 @@ func Test_Problem0010(t *testing.T) {
 				one: false,
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "b",
 				two: ".*..*b",
@@ -174,6 +172,8 @@ func Test_Problem0010(t *testing.T) {
 
 	for _, q := range qs {
 		a, p := q.a, q.p
-		ast.Equal(a.one, isMatch(p.one, p.two), "输入:%v", p)
+		t.Run(p.one, func(t *testing.T) {
+			ast.Equal(a.one, isMatch4(p.one, p.two), "输入:%v", p)
+		})
 	}
 }

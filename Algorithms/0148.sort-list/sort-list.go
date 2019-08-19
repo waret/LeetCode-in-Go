@@ -1,4 +1,4 @@
-package problem0148
+package main
 
 import (
 	"github.com/aQuaYi/LeetCode-in-Go/kit"
@@ -64,4 +64,47 @@ func merge(left, right *ListNode) *ListNode {
 	}
 
 	return headPre.Next
+}
+
+func sortList2(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+	left, right := splitList2(head)
+	return mergeList2(sortList2(left), sortList2(right))
+}
+
+func splitList2(head *ListNode) (left, right *ListNode) {
+	slow, fast := head, head
+	var slowPre *ListNode
+	for fast != nil && fast.Next != nil {
+		slowPre, slow = slow, slow.Next
+		fast = fast.Next.Next
+	}
+	slowPre.Next = nil
+	left, right = head, slow
+	return
+}
+
+func mergeList2(left, right *ListNode) *ListNode {
+	cur := &ListNode{}
+	headPre := cur
+	for left != nil && right != nil {
+		if left.Val < right.Val {
+			cur.Next, left = left, left.Next
+		} else {
+			cur.Next, right = right, right.Next
+		}
+		cur = cur.Next
+	}
+	if left != nil {
+		cur.Next = left
+	} else {
+		cur.Next = right
+	}
+	return headPre.Next
+}
+
+func main() {
+	sortList2(kit.Ints2List([]int{2, 4, 3, 1, 5, 6, 100, 200, 300}))
 }

@@ -1,4 +1,4 @@
-package problem0021
+package main
 
 import (
 	"fmt"
@@ -29,37 +29,37 @@ func Test_Problem0021(t *testing.T) {
 	ast := assert.New(t)
 
 	qs := []question{
-		question{
+		{
 			para{[]int{},
 				[]int{1, 3, 5, 7},
 			},
 			ans{[]int{1, 3, 5, 7}},
 		},
-		question{
+		{
 			para{[]int{1, 3, 5, 7},
 				[]int{},
 			},
 			ans{[]int{1, 3, 5, 7}},
 		},
-		question{
+		{
 			para{[]int{1, 3, 5, 7},
 				[]int{2, 4, 6, 8},
 			},
 			ans{[]int{1, 2, 3, 4, 5, 6, 7, 8}},
 		},
-		question{
+		{
 			para{[]int{10, 20, 30},
 				[]int{1, 2, 3},
 			},
 			ans{[]int{1, 2, 3, 10, 20, 30}},
 		},
-		question{
+		{
 			para{[]int{1, 3, 5},
 				[]int{2, 4, 6, 8, 10},
 			},
 			ans{[]int{1, 2, 3, 4, 5, 6, 8, 10}},
 		},
-		question{
+		{
 			para{[]int{1, 3, 5, 7, 9},
 				[]int{2, 4, 6},
 			},

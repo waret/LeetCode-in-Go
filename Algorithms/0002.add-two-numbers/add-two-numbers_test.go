@@ -1,6 +1,7 @@
-package problem0002
+package main
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -38,11 +39,20 @@ func makeListNode(is []int) *ListNode {
 	return res
 }
 
+func printListNode(ls *ListNode) {
+	if ls.Next == nil {
+		fmt.Print(ls.Val)
+		return
+	}
+	printListNode(ls.Next)
+	fmt.Print(ls.Val)
+}
+
 func Test_OK(t *testing.T) {
 	ast := assert.New(t)
 
 	qs := []question{
-		question{
+		{
 			p: para{
 				one: makeListNode([]int{2, 4, 3}),
 				two: makeListNode([]int{5, 6, 4}),
@@ -51,7 +61,7 @@ func Test_OK(t *testing.T) {
 				one: makeListNode([]int{7, 0, 8}),
 			},
 		},
-		question{
+		{
 			p: para{
 				one: makeListNode([]int{9, 8, 7, 6, 5}),
 				two: makeListNode([]int{1, 1, 2, 3, 4}),
@@ -60,7 +70,7 @@ func Test_OK(t *testing.T) {
 				one: makeListNode([]int{0, 0, 0, 0, 0, 1}),
 			},
 		},
-		question{
+		{
 			p: para{
 				one: makeListNode([]int{0}),
 				two: makeListNode([]int{5, 6, 4}),
@@ -73,6 +83,33 @@ func Test_OK(t *testing.T) {
 
 	for _, q := range qs {
 		a, p := q.a, q.p
-		ast.Equal(a.one, addTwoNumbers(p.one, p.two), "输入:%v", p)
+		aa := addTwoNumbers2(p.one, p.two)
+		printListNode(p.one)
+		fmt.Print(" + ")
+		printListNode(p.two)
+		fmt.Print(" = ")
+		printListNode(aa)
+		fmt.Println()
+		ast.Equal(a.one, aa, "输入:%v", p)
+	}
+}
+
+// go test -bench=. -benchmem -run=none
+func Benchmark_addTwoNumbers(b *testing.B) {
+
+	funcs := []struct {
+		name string
+		f    func(l1 *ListNode, l2 *ListNode) *ListNode
+	}{
+		{"addTwoNumbers1", addTwoNumbers1},
+		{"addTwoNumbers2", addTwoNumbers2},
+	}
+
+	for _, f := range funcs {
+		b.Run(f.name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				f.f(makeListNode([]int{2, 4, 3}), makeListNode([]int{5, 6, 4}))
+			}
+		})
 	}
 }

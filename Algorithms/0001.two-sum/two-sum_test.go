@@ -1,4 +1,4 @@
-package problem0001
+package main
 
 import (
 	"testing"
@@ -24,7 +24,7 @@ func Test_OK(t *testing.T) {
 	ast := assert.New(t)
 
 	qs := []question{
-		question{
+		{
 			p: para{
 				one: []int{3, 2, 4},
 				two: 6,
@@ -33,7 +33,7 @@ func Test_OK(t *testing.T) {
 				one: []int{1, 2},
 			},
 		},
-		question{
+		{
 			p: para{
 				one: []int{3, 2, 4},
 				two: 8,
@@ -46,6 +46,9 @@ func Test_OK(t *testing.T) {
 
 	for _, q := range qs {
 		a, p := q.a, q.p
-		ast.Equal(a.one, twoSum(p.one, p.two), "输入:%v", p)
+		ast.Equal(a.one, twoSum0(p.one, p.two), "输入:%v", p)
+		ast.Equal(a.one, twoSum1(p.one, p.two), "输入:%v", p)
+		ast.Equal(a.one, twoSum2(p.one, p.two), "输入:%v", p)
+		ast.Equal(a.one, twoSum3(p.one, p.two), "输入:%v", p)
 	}
 }

@@ -1,6 +1,28 @@
-package problem0005
+package main
 
-func longestPalindrome(s string) string {
+import "fmt"
+
+func longestPalindrome1(s string) string {
+	start, end := 0, 0
+	for i := 0; i < len(s); i++ {
+		for j := len(s); j > i; j-- {
+			x, y := i, j-1
+			for x < y {
+				if s[x] != s[y] {
+					break
+				}
+				x++
+				y--
+			}
+			if x >= y && end-start < j-i {
+				start, end = i, j
+			}
+		}
+	}
+	return s[start:end]
+}
+
+func longestPalindrome2(s string) string {
 	if len(s) < 2 { // 肯定是回文，直接返回
 		return s
 	}
@@ -51,4 +73,46 @@ func longestPalindrome(s string) string {
 	}
 
 	return s[begin : begin+maxLen]
+}
+
+func longestPalindrome3(s string) string {
+	if len(s) < 1 {
+		return ""
+	}
+	start, end := 0, 0
+	for i := 0; i < len(s); i++ {
+		if len(s)-i <= (start-end+1)/2 {
+			break
+		}
+		len1 := expandAroundCenter(s, i, i)
+		len2 := expandAroundCenter(s, i, i+1)
+		lens := max(len1, len2)
+		if lens > end-start {
+			start = i - (lens-1)/2
+			end = i + lens/2
+		}
+	}
+	return s[start : end+1]
+}
+
+func expandAroundCenter(s string, left, right int) int {
+	L, R := left, right
+	for L >= 0 && R < len(s) && s[L] == s[R] {
+		L--
+		R++
+	}
+	return R - L - 1
+}
+
+func max(x, y int) int {
+	if x > y {
+		return x
+	} else {
+		return y
+	}
+}
+
+func main() {
+	fmt.Println(longestPalindrome1("babad"))
+	fmt.Println(longestPalindrome1("cbbd"))
 }

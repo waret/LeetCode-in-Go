@@ -1,4 +1,4 @@
-package problem0468
+package main
 
 import (
 	"fmt"
@@ -70,7 +70,7 @@ func Test_validIPAddress(t *testing.T) {
 	ast := assert.New(t)
 
 	for _, tc := range tcs {
-		fmt.Printf("~~%v~~\n", tc)
+		fmt.Printf("~~%+v~~\n", tc)
 		ast.Equal(tc.ans, validIPAddress(tc.IP), "输入:%v", tc)
 	}
 }

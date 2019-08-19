@@ -1,4 +1,4 @@
-package problem0015
+package main
 
 import (
 	"fmt"
@@ -28,15 +28,13 @@ func Test_Problem0015(t *testing.T) {
 	ast := assert.New(t)
 
 	qs := []question{
-
-		question{
+		{
 			para{[]int{1, -1, -1, 0}},
 			ans{[][]int{
 				[]int{-1, 0, 1},
 			}},
 		},
-
-		question{
+		{
 			para{[]int{-1, 0, 1, 2, 2, 2, 2, -1, -4}},
 			ans{[][]int{
 				[]int{-4, 2, 2},
@@ -44,26 +42,24 @@ func Test_Problem0015(t *testing.T) {
 				[]int{-1, 0, 1},
 			}},
 		},
-		question{
+		{
 			para{[]int{0, 0, 0, 0, 0}},
 			ans{[][]int{
 				[]int{0, 0, 0},
 			}},
 		},
-		question{
+		{
 			para{[]int{1, 1, -2}},
 			ans{[][]int{
 				[]int{-2, 1, 1},
 			}},
 		},
-		question{
+		{
 			para{[]int{0, 0, 0}},
 			ans{[][]int{
 				[]int{0, 0, 0},
 			}},
 		},
-
-		// 如需多个测试，可以复制上方元素。
 	}
 
 	for _, q := range qs {

@@ -1,4 +1,4 @@
-package problem0013
+package main
 
 import (
 	"testing"
@@ -27,29 +27,35 @@ func Test_Problem0013(t *testing.T) {
 	ast := assert.New(t)
 
 	qs := []question{
-		question{
+		{
 			para{"XXXIX"},
 			ans{39},
 		},
-		question{
+		{
 			para{"MDCCCLXXXVIII"},
 			ans{1888},
 		},
-		question{
+		{
 			para{"MCMLXXVI"},
 			ans{1976},
 		},
-		question{
+		{
 			para{"MMMCMXCIX"},
 			ans{3999},
 		},
-
+		{
+			para{"LXIX"},
+			ans{69},
+		},
+		{
+			para{"XLIX"},
+			ans{49},
+		},
 		// 如需多个测试，可以复制上方元素。
 	}
 
 	for _, q := range qs {
 		a, p := q.ans, q.para
-
 		ast.Equal(a.one, romanToInt(p.one), "输入:%v", p)
 	}
 }

@@ -1,4 +1,4 @@
-package problem0019
+package main
 
 import (
 	"fmt"
@@ -57,34 +57,30 @@ func Test_Problem0019(t *testing.T) {
 	}
 }
 
-// convert *ListNode to []int
-func l2s(head *ListNode) []int {
-	res := []int{}
 
-	for head != nil {
-		res = append(res, head.Val)
-		head = head.Next
+// go test -bench=. -benchmem -run=none
+func Benchmark_aaa(b *testing.B) {
+
+	funcs := []struct {
+		name string
+		f    func(head *ListNode, n int) *ListNode
+	}{
+		{"removeNthFromEnd", removeNthFromEnd},
+		{"removeNthFromEnd1", removeNthFromEnd1},
+		{"removeNthFromEnd2", removeNthFromEnd2},
+		{"removeNthFromEnd3", removeNthFromEnd3},
 	}
 
-	return res
-}
-
-// convert []int to *ListNode
-func s2l(nums []int) *ListNode {
-	if len(nums) == 0 {
-		return nil
+	for _, f := range funcs {
+		b.Run(f.name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				s := make([]int, 999999)
+				for i := 0; i < 999999; i++ {
+					s[i] = i
+				}
+				l := s2l(s)
+				f.f(l, 2)
+			}
+		})
 	}
-
-	res := &ListNode{
-		Val: nums[0],
-	}
-	temp := res
-	for i := 1; i < len(nums); i++ {
-		temp.Next = &ListNode{
-			Val: nums[i],
-		}
-		temp = temp.Next
-	}
-
-	return res
 }

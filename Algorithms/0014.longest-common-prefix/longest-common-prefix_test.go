@@ -1,4 +1,4 @@
-package problem0014
+package main
 
 import (
 	"testing"
@@ -27,25 +27,24 @@ func Test_Problem0014(t *testing.T) {
 	ast := assert.New(t)
 
 	qs := []question{
-		question{
+		{
 			para{
 				[]string{"abcdd", "abcde", "ab"},
 			},
 			ans{"ab"},
 		},
-		question{
+		{
 			para{
 				[]string{"abcdd", "abcde"},
 			},
 			ans{"abcd"},
 		},
-		question{
+		{
 			para{
 				[]string{},
 			},
 			ans{""},
 		},
-		// 如需多个测试，可以复制上方元素。
 	}
 
 	for _, q := range qs {

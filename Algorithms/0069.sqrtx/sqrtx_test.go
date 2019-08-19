@@ -1,4 +1,4 @@
-package problem0069
+package main
 
 import (
 	"fmt"
@@ -27,8 +27,7 @@ func Test_Problem0069(t *testing.T) {
 	ast := assert.New(t)
 
 	qs := []question{
-
-		question{
+		{
 			para{
 				15,
 			},
@@ -36,8 +35,7 @@ func Test_Problem0069(t *testing.T) {
 				3,
 			},
 		},
-
-		question{
+		{
 			para{
 				3,
 			},
@@ -45,8 +43,7 @@ func Test_Problem0069(t *testing.T) {
 				1,
 			},
 		},
-
-		question{
+		{
 			para{
 				9,
 			},
@@ -54,8 +51,6 @@ func Test_Problem0069(t *testing.T) {
 				3,
 			},
 		},
-
-		// 如需多个测试，可以复制上方元素。
 	}
 
 	for _, q := range qs {

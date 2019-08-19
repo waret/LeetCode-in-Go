@@ -1,4 +1,6 @@
-package problem0022
+package main
+
+import "fmt"
 
 func generateParenthesis(n int) []string {
 	res := make([]string, 0, n*n)
@@ -28,4 +30,43 @@ func dfs(left, right, idx int, bytes []byte, res *[]string) {
 		bytes[idx] = ')'
 		dfs(left, right-1, idx+1, bytes, res)
 	}
+}
+
+func generateParenthesis1(n int) []string {
+	var ans []string
+	backtrack(&ans, "", 0, 0, n)
+	return ans
+}
+
+func backtrack(ans *[]string, cur string, open, close, max int) {
+	if len(cur) == max*2 {
+		*ans = append(*ans, cur)
+		return
+	}
+	if open < max {
+		backtrack(ans, cur+"(", open+1, close, max)
+	}
+	if close < open {
+		backtrack(ans, cur+")", open, close+1, max)
+	}
+}
+
+func generateParenthesis2(n int) []string {
+	var ans []string
+	if n == 0 {
+		return append(ans, "")
+	} else {
+		for c := 0; c < n; c++ {
+			for _, left := range generateParenthesis2(c) {
+				for _, right := range generateParenthesis2(n - 1 - c) {
+					ans = append(ans, "("+left+")"+right)
+				}
+			}
+		}
+	}
+	return ans
+}
+
+func main() {
+	fmt.Println(generateParenthesis2(3))
 }
