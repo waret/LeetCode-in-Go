@@ -1,4 +1,4 @@
-package problem0003
+package main
 
 import (
 	"testing"
@@ -23,7 +23,7 @@ func Test_OK(t *testing.T) {
 	ast := assert.New(t)
 
 	qs := []question{
-		question{
+		{
 			p: para{
 				one: "abcabcbb",
 			},
@@ -31,7 +31,7 @@ func Test_OK(t *testing.T) {
 				one: 3,
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "bbbbbbbb",
 			},
@@ -39,9 +39,25 @@ func Test_OK(t *testing.T) {
 				one: 1,
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "pwwkew",
+			},
+			a: ans{
+				one: 3,
+			},
+		},
+		{
+			p: para{
+				one: "advdfahjk",
+			},
+			a: ans{
+				one: 7,
+			},
+		},
+		{
+			p: para{
+				one: "dvdf",
 			},
 			a: ans{
 				one: 3,
@@ -51,6 +67,8 @@ func Test_OK(t *testing.T) {
 
 	for _, q := range qs {
 		a, p := q.a, q.p
-		ast.Equal(a.one, lengthOfLongestSubstring(p.one), "输入:%v", p)
+		t.Run(p.one, func(t *testing.T) {
+			ast.Equal(a.one, lengthOfLongestSubstring4(p.one), "输入:%v", p)
+		})
 	}
 }

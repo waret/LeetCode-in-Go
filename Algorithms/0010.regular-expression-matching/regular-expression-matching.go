@@ -1,4 +1,4 @@
-package problem0010
+package main
 
 func isMatch(s, p string) bool {
 	sSize := len(s)
@@ -49,4 +49,89 @@ func isMatch(s, p string) bool {
 	}
 
 	return dp[sSize][pSize]
+}
+
+func isMatch2(s, p string) bool {
+	memo := make([][]Result, len(s)+1)
+	for i := 0; i < len(s)+1; i++ {
+		memo[i] = make([]Result, len(p)+1)
+	}
+	return dp(0, 0, s, p, memo)
+}
+
+type Result int
+
+const (
+	EMPTY Result = iota
+	FALSE
+	TRUE
+)
+
+func dp(i, j int, text, pattern string, memo [][]Result) bool {
+	if memo[i][j] != EMPTY {
+		return memo[i][j] == TRUE
+	}
+	var ans bool
+	if j == len(pattern) {
+		ans = i == len(text)
+	} else {
+		firstMatch := i < len(text) && (pattern[j] == text[i] || pattern[j] == '.')
+		if j+1 < len(pattern) && pattern[j+1] == '*' {
+			ans = dp(i, j+2, text, pattern, memo) || firstMatch && dp(i+1, j, text, pattern, memo)
+		} else {
+			ans = firstMatch && dp(i+1, j+1, text, pattern, memo)
+		}
+	}
+	if ans {
+		memo[i][j] = TRUE
+	} else {
+		memo[i][j] = FALSE
+	}
+	return ans
+}
+
+func isMatch3(s, p string) bool {
+	dp := make([][]bool, len(s)+1)
+	for i := 0; i < len(s)+1; i++ {
+		dp[i] = make([]bool, len(p)+1)
+	}
+	dp[len(s)][len(p)] = true
+	for i := len(s); i >= 0; i-- {
+		for j := len(p) - 1; j >= 0; j-- {
+			firstMatch := i < len(s) && (p[j] == s[i] || p[j] == '.')
+			if j+1 < len(p) && p[j+1] == '*' {
+				dp[i][j] = dp[i][j+2] || firstMatch && dp[i+1][j]
+			} else {
+				dp[i][j] = firstMatch && dp[i+1][j+1]
+			}
+		}
+	}
+	return dp[0][0]
+}
+
+func isMatch4(s, p string) bool {
+	if p == "" {
+		return s == ""
+	}
+	firstMatch := s != "" && (p[0] == s[0] || p[0] == '.')
+	if len(p) >= 2 && p[1] == '*' {
+		// pattern的第二个字符为*时，p[0]p[1]无需匹配任何s直接丢弃
+		// 如果s[0]已经匹配成功的话，继续看pattern是否匹配s[1:]
+		return isMatch4(s, p[2:]) || (firstMatch && isMatch4(s[1:], p))
+	} else {
+		return firstMatch && isMatch4(s[1:], p[1:])
+	}
+}
+
+func (r Result) String() string {
+	switch r {
+	case EMPTY:
+		return "EMPTY"
+	case FALSE:
+		return "FALSE"
+	case TRUE:
+		return "TRUE"
+	default:
+		return "UNKNOWN"
+	}
 }

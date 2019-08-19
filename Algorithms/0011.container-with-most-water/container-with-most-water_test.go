@@ -1,4 +1,4 @@
-package problem0011
+package main
 
 import (
 	"testing"
@@ -27,15 +27,15 @@ func Test_Problem0011(t *testing.T) {
 	ast := assert.New(t)
 
 	qs := []question{
-		question{
+		{
 			para{[]int{1, 2, 3, 1}},
 			ans{3},
 		},
-		question{
+		{
 			para{[]int{1, 3, 6, 4, 3, 5, 6, 7, 8, 9, 7, 5, 4, 3, 2, 1}},
 			ans{48},
 		},
-		question{
+		{
 			para{[]int{1, 1}},
 			ans{1},
 		},
@@ -43,7 +43,6 @@ func Test_Problem0011(t *testing.T) {
 
 	for _, q := range qs {
 		a, p := q.ans, q.para
-
-		ast.Equal(a.one, maxArea(p.one), "输入:%v", p)
+		ast.Equal(a.one, maxArea3(p.one), "输入:%v", p)
 	}
 }

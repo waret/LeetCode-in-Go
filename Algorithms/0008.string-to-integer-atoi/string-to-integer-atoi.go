@@ -1,54 +1,90 @@
-package problem0008
+package main
 
-import "strings"
-import "math"
+import (
+	"fmt"
+	"math"
+	"strings"
+)
 
 func myAtoi(s string) int {
-	return convert(clean(s))
+	sign, abs := clean(s)
+	x := 0
+	for _, b := range abs {
+		x = 10*x + int(b-'0')
+		if x > 1<<31-1 {
+			if sign > 0 {
+				return 1<<31 - 1
+			} else {
+				return -1 << 31
+			}
+		}
+	}
+
+	return sign * x
 }
 
 func clean(s string) (sign int, abs string) {
-	// 除去首尾的空格
 	s = strings.TrimSpace(s)
 	if s == "" {
 		return
 	}
-
-	switch s[0] {
-	case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
+	switch {
+	case s[0] >= '0' && s[0] <= '9':
 		sign, abs = 1, s
-	case '+':
-		sign, abs = 1, s[1:]
-	case '-':
+	case s[0] == '-':
 		sign, abs = -1, s[1:]
+	case s[0] == '+':
+		sign, abs = 1, s[1:]
 	default:
-		abs = ""
 		return
 	}
-
 	for i, b := range abs {
-		if b < '0' || '9' < b {
+		if b > '9' || b < '0' {
 			abs = abs[:i]
 			break
 		}
 	}
-
 	return
 }
 
-func convert(sign int, absStr string) int {
-	abs := 0
 
-	for _, b := range absStr {
-		abs = abs*10 + int(b-'0')
-		// 检查溢出
-		switch {
-		case sign == 1 && abs > math.MaxInt32:
-			return math.MaxInt32
-		case sign == -1 && sign*abs < math.MinInt32:
-			return math.MinInt32
+func myAtoi2(s string) int {
+	result := int64(0)
+	negative := false
+	i := 0
+	for i < len(s) && s[i] == ' ' {
+		i++
+	}
+	if i < len(s) {
+		if s[i] == '-' {
+			negative = true
+			i++
+		} else if s[i] == '+' {
+			negative = false
+			i++
 		}
 	}
+	for i < len(s) && s[i] >= '0' && s[i] <='9' && result <= math.MaxInt32 {
+		result *= 10
+		result += int64(s[i] - '0')
+		i++
+	}
+	if negative {
+		result = -result
+	}
+	if result >= math.MaxInt32 {
+		return math.MaxInt32
+	} else if result <= math.MinInt32 {
+		return math.MinInt32
+	}
 
-	return sign * abs
+	return int(result)
+}
+
+func main() {
+	//fmt.Println(myAtoi2("123"))
+	//fmt.Println(myAtoi2("-2147483649"))
+	//fmt.Println(myAtoi2("-2147483647"))
+	//fmt.Println(myAtoi2("1"))
+	fmt.Println(myAtoi2("42"))
 }

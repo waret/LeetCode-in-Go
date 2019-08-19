@@ -1,11 +1,11 @@
-package problem0018
+package main
 
 import (
 	"sort"
 )
 
 func fourSum(nums []int, target int) [][]int {
-	res := [][]int{}
+	var res [][]int
 	sort.Ints(nums)
 
 	for i := 0; i < len(nums)-3; i++ {
@@ -57,4 +57,52 @@ func next(nums []int, l, r int) (int, int) {
 	}
 
 	return l, r
+}
+
+
+
+func fourSum1(nums []int, target int) [][]int {
+	var res [][]int
+	sort.Ints(nums)
+
+	for i := 0; i < len(nums) - 3; i++ {
+		if i > 0 && nums[i] == nums[i-1] {
+			continue
+		}
+		for j := i+1; j < len(nums) - 2; j++ {
+			if j > i+1 && nums[j] == nums[j-1] {
+				continue
+			}
+			l, r := j+1, len(nums)-1
+			loop:
+			for l < r {
+				s := nums[i] + nums[j] + nums[l] + nums[r]
+				switch  {
+				case s > target:
+					r--
+				case s < target:
+					l++
+				default:
+					res = append(res, []int{nums[i], nums[j], nums[l], nums[r]})
+					for l < r {
+						switch {
+						case nums[l] == nums[l+1]:
+							l++
+						case nums[r] == nums[r-1]:
+							r--
+						default:
+							l++
+							r--
+							goto loop
+						}
+					}
+				}
+			}
+		}
+	}
+	return res
+}
+
+func main() {
+	fourSum1([]int{-3,-2,-1,0,0,1,2,3}, 0)
 }

@@ -1,4 +1,4 @@
-package problem0023
+package main
 
 import (
 	"fmt"
@@ -69,46 +69,4 @@ func Test_Problem0023(t *testing.T) {
 
 		ast.Equal(a.one, l2s(mergeKLists(ss2ls(p.one))), "输入:%v", p)
 	}
-}
-
-// convert *ListNode to []int
-func l2s(head *ListNode) []int {
-	res := []int{}
-
-	for head != nil {
-		res = append(res, head.Val)
-		head = head.Next
-	}
-
-	return res
-}
-
-// convert []int to *ListNode
-func s2l(nums []int) *ListNode {
-	if len(nums) == 0 {
-		return nil
-	}
-
-	res := &ListNode{
-		Val: nums[0],
-	}
-	temp := res
-	for i := 1; i < len(nums); i++ {
-		temp.Next = &ListNode{
-			Val: nums[i],
-		}
-		temp = temp.Next
-	}
-
-	return res
-}
-
-func ss2ls(numss [][]int) []*ListNode {
-	res := []*ListNode{}
-
-	for _, nums := range numss {
-		res = append(res, s2l(nums))
-	}
-
-	return res
 }

@@ -1,8 +1,8 @@
-package problem0468
+package main
 
 import (
-	"strconv"
-	"strings"
+"strconv"
+"strings"
 )
 
 func validIPAddress(IP string) string {
@@ -20,69 +20,55 @@ func isIPv4(IP string) bool {
 	if !strings.Contains(IP, ".") {
 		return false
 	}
-
 	ss := strings.Split(IP, ".")
-
 	if len(ss) != 4 {
 		return false
 	}
-
 	for _, s := range ss {
-		if !isV4Num(s) {
+		if !isValidIPv4Num(s) {
 			return false
 		}
 	}
-
 	return true
 }
 
-func isV4Num(s string) bool {
+func isValidIPv4Num(s string) bool {
 	if len(s) == 0 {
 		return false
 	}
-
 	if len(s) > 1 &&
-		(s[0] < '1' || '9' < s[0]) {
+		(s[0] < '0' || s[0] > '9') {
 		return false
 	}
-
 	n, err := strconv.Atoi(s)
-
-	return err == nil && 0 <= n && n < 256
+	return err == nil && n < 256 && n >= 0
 }
 
 func isIPv6(IP string) bool {
 	if !strings.Contains(IP, ":") {
 		return false
 	}
-
 	ss := strings.Split(IP, ":")
-
 	if len(ss) != 8 {
 		return false
 	}
-
 	for _, s := range ss {
-		if !isV6Num(s) {
+		if !isValidIPv6Num(s) {
 			return false
 		}
 	}
-
 	return true
 }
 
-func isV6Num(s string) bool {
+func isValidIPv6Num(s string) bool {
 	if len(s) == 0 || len(s) > 4 {
 		return false
 	}
-
-	if !('0' <= s[0] && s[0] <= '9') &&
-		!('a' <= s[0] && s[0] <= 'z') &&
-		!('A' <= s[0] && s[0] <= 'Z') {
+	if !(s[0] >= '0' && s[0] <= '9') &&
+		!(s[0] >= 'a' && s[0] >= 'z') &&
+		!(s[0] >= 'A' && s[0] >= 'Z') {
 		return false
 	}
-
 	n, err := strconv.ParseInt(s, 16, 64)
-
-	return err == nil && 0 <= n && n < 1<<16
+	return err == nil && n >= 0 && n < 1<<16
 }

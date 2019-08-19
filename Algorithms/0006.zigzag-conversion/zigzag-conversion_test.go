@@ -1,4 +1,4 @@
-package problem0006
+package main
 
 import (
 	"testing"
@@ -24,7 +24,7 @@ func Test_OK(t *testing.T) {
 	ast := assert.New(t)
 
 	qs := []question{
-		question{
+		{
 			p: para{
 				one: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
 				two: 1,
@@ -33,7 +33,7 @@ func Test_OK(t *testing.T) {
 				one: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
 				two: 2,
@@ -42,7 +42,7 @@ func Test_OK(t *testing.T) {
 				one: "ACEGIKMOQSUWYBDFHJLNPRTVXZ",
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
 				two: 3,
@@ -51,7 +51,7 @@ func Test_OK(t *testing.T) {
 				one: "AEIMQUYBDFHJLNPRTVXZCGKOSW",
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
 				two: 4,
@@ -60,7 +60,7 @@ func Test_OK(t *testing.T) {
 				one: "AGMSYBFHLNRTXZCEIKOQUWDJPV",
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "ABCDEFGHIJKLMNOPQRSTUVWX",
 				two: 5,
@@ -69,7 +69,7 @@ func Test_OK(t *testing.T) {
 				one: "AIQBHJPRXCGKOSWDFLNTVEMU",
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "A",
 				two: 3,

@@ -1,4 +1,4 @@
-package problem0007
+package main
 
 import (
 	"testing"
@@ -23,7 +23,7 @@ func Test_OK(t *testing.T) {
 	ast := assert.New(t)
 
 	qs := []question{
-		question{
+		{
 			p: para{
 				one: 123,
 			},
@@ -31,7 +31,7 @@ func Test_OK(t *testing.T) {
 				one: 321,
 			},
 		},
-		question{
+		{
 			p: para{
 				one: -123,
 			},
@@ -39,7 +39,7 @@ func Test_OK(t *testing.T) {
 				one: -321,
 			},
 		},
-		question{
+		{
 			p: para{
 				one: 1234567899,
 			},
@@ -47,7 +47,7 @@ func Test_OK(t *testing.T) {
 				one: 0,
 			},
 		},
-		question{
+		{
 			p: para{
 				one: -1234567899,
 			},

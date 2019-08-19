@@ -1,4 +1,4 @@
-package problem0025
+package main
 
 import (
 	"fmt"
@@ -15,7 +15,6 @@ var tcs = []struct {
 	k    int
 	ans  []int
 }{
-
 	{
 		[]int{1, 2, 3, 4, 5},
 		3,

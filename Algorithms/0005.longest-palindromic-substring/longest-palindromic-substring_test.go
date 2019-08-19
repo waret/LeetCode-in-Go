@@ -1,4 +1,4 @@
-package problem0005
+package main
 
 import (
 	"testing"
@@ -11,7 +11,7 @@ type para struct {
 }
 
 type ans struct {
-	one string
+	one []string
 }
 
 type question struct {
@@ -23,42 +23,42 @@ func Test_OK(t *testing.T) {
 	ast := assert.New(t)
 
 	qs := []question{
-		question{
+		{
 			p: para{
 				one: "babad",
 			},
 			a: ans{
-				one: "bab",
+				one: []string{"bab", "aba"},
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "cbbd",
 			},
 			a: ans{
-				one: "bb",
+				one: []string{"bb"},
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "abbcccddcccbba",
 			},
 			a: ans{
-				one: "abbcccddcccbba",
+				one: []string{"abbcccddcccbba"},
 			},
 		},
-		question{
+		{
 			p: para{
 				one: "a",
 			},
 			a: ans{
-				one: "a",
+				one: []string{"a"},
 			},
 		},
 	}
 
 	for _, q := range qs {
 		a, p := q.a, q.p
-		ast.Equal(a.one, longestPalindrome(p.one), "输入:%v", p)
+		ast.Contains(a.one, longestPalindrome3(p.one), "输入:%v", p)
 	}
 }
