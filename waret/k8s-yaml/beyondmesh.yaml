@@ -1,0 +1,140 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: beyondmesh-api
+  labels:
+    heritage: Tiller
+    chart: "BeyondMesh-0.1.0"
+    app: beyondmesh-api
+    release: beyondmesh
+spec:
+  type: ClusterIP
+  selector:
+    app: beyondmesh-api
+    release: beyondmesh
+  ports:
+    - port: 50000
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: beyondmesh-web
+  labels:
+    heritage: Tiller
+    chart: "BeyondMesh-0.1.0"
+    app: beyondmesh-web
+    release: beyondmesh
+spec:
+  type: ClusterIP
+  selector:
+    app: beyondmesh-web
+    release: beyondmesh
+  ports:
+    - port: 80
+      protocol: TCP
+
+---
+# Source: BeyondMesh/templates/deployment.yaml
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: beyondmesh-web
+  labels:
+    heritage: Tiller
+    chart: "BeyondMesh-0.1.0"
+    app: beyondmesh-web
+    release: beyondmesh
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: beyondmesh-web
+        release: beyondmesh
+    spec:
+      containers:
+        - name: beyondmesh-web
+          image: "harbor.waret.net/beyondmesh/beyondmesh-web:latest"
+          imagePullPolicy: Always
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/etc/nginx/sbin/nginx","-s","quit"]
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: beyondmesh-api
+  labels:
+    heritage: Tiller
+    chart: "BeyondMesh-0.1.0"
+    app: beyondmesh-api
+    release: beyondmesh
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: beyondmesh-api
+        release: beyondmesh
+    spec:
+      initContainers:
+      - name: init-ds
+        image: harbor.waret.net/library/busybox:latest
+        command:
+        - '/bin/sh'
+        - '-c'
+        - |
+            while true
+            do
+              rt=$(nc -z -w 1 beyondmesh-mysql.beyondmesh.svc.cluster.local 3306)
+              if [ $? -eq 0 ]; then
+                echo "DB is UP"
+                break
+              fi
+              echo "DB is not yet reachable;sleep for 2s before retry"
+              sleep 2
+            done
+      containers:
+        - name: beyondmesh-api
+          image: harbor.waret.net/beyondmesh/beyondmesh-api:latest
+          imagePullPolicy: Always
+          env:
+            - name: GIN_MODE
+              value: "release"
+          args:
+            - --config=/etc/beyondmesh/config/config.toml
+          ports:
+            - containerPort: 50000
+          livenessProbe:
+            httpGet:
+              path: /api/probe/healthy
+              port: 50000
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /api/probe/healthy
+              port: 50000
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            
+          volumeMounts:
+            - name: beyondmesh-config
+              mountPath: /etc/beyondmesh/config
+      volumes:
+        - name: beyondmesh-config
+          configMap:
+            name: beyondmesh-config
+            items:
+              - key: config
+                path:  config.toml
+

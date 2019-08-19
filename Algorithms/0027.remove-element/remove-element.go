@@ -1,4 +1,6 @@
-package problem0027
+package main
+
+import "fmt"
 
 func removeElement(nums []int, val int) int {
 	// j指向最后一个不为val的位置
@@ -21,4 +23,21 @@ func removeElement(nums []int, val int) int {
 	}
 
 	return i
+}
+
+func removeElement1(nums []int, val int) int {
+	left, right, size := 0, 0, len(nums)
+	for ; right < size; right++ {
+		if nums[right] != val {
+			nums[left] = nums[right]
+			left++
+		}
+	}
+	return left
+}
+
+func main() {
+	nums := []int{3, 2, 2, 3}
+	fmt.Println(removeElement1(nums, 3))
+	fmt.Println(nums)
 }

@@ -1,6 +1,7 @@
-package problem0029
+package main
 
 import (
+	"fmt"
 	"math"
 )
 
@@ -13,11 +14,12 @@ func divide(m, n int) int {
 	signM, absM := analysis(m)
 	signN, absN := analysis(n)
 
-	res, _ := d(absM, absN, 1)
+	res := d3(absM, absN)
+	//res, _ := d(absM, absN, 1)
 
 	// 修改res的符号
 	if signM != signN {
-		res = res - res - res
+		res = -res
 	}
 
 	// 检查溢出
@@ -33,7 +35,7 @@ func analysis(num int) (sign, abs int) {
 	abs = num
 	if num < 0 {
 		sign = -1
-		abs = num - num - num
+		abs = -num
 	}
 
 	return
@@ -60,25 +62,38 @@ func d(m, n, count int) (res, remainder int) {
 }
 
 // 以下为上述递归方法的普通实现方式
-// func d(m, n int) int {
-// 	res := 0
-// 	rs, ress := []int{n}, []int{1}
-// 	temp, i := n+n, 1
+func d2(m, n int) int {
+	res := 0
+	rs, ress := []int{n}, []int{1}
+	temp, i := n+n, 1
 
-// 	for temp <= m {
-// 		rs = append(rs, temp)
-// 		ress = append(ress, ress[i-1]+ress[i-1])
+	for temp <= m {
+		rs = append(rs, temp)
+		ress = append(ress, ress[i-1]+ress[i-1])
 
-// 		temp += temp
-// 		i++
-// 	}
+		temp += temp
+		i++
+	}
 
-// 	for i := len(rs) - 1; i >= 0; i-- {
-// 		if m >= rs[i] {
-// 			m -= rs[i]
-// 			res += ress[i]
-// 		}
-// 	}
+	for i := len(rs) - 1; i >= 0; i-- {
+		if m >= rs[i] {
+			m -= rs[i]
+			res += ress[i]
+		}
+	}
 
-// 	return res
-// }
+	return res
+}
+
+func d3(m, n int) int {
+	res := 0
+	for m >= n {
+		m -= n
+		res++
+	}
+	return res
+}
+
+func main() {
+	fmt.Println(divide(1, 1))
+}

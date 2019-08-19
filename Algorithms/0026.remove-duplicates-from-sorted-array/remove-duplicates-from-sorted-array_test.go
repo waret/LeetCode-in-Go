@@ -31,7 +31,7 @@ func Test_removeDuplicates(t *testing.T) {
 
 	for _, tc := range tcs {
 		fmt.Printf("~~%v~~\n", tc)
-		ast.Equal(tc.ans, removeDuplicates(tc.nums), "输入:%v", tc)
+		ast.Equal(tc.ans, removeDuplicates1(tc.nums), "输入:%v", tc)
 	}
 }
 
