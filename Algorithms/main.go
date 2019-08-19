@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/waret/LeetCode-in-Go/kit"
+	"github.com/waret/go-study/kit"
 	"reflect"
 )
 
