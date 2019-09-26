@@ -1,8 +1,8 @@
 package first
 
 import (
-	_ "../trans"
 	"fmt"
+	_ "github.com/waret/go-study/waret/hello/trans"
 )
 
 func init() {
